@@ -17,7 +17,8 @@ router.post('/', function(req, res, next) {
         contentHelper.insertPassage(uuid,title,content);
         res.send('test');
     }else if (method=='getMyArticleList'){
-        var uuid=req.body.uuid;
+        //var uuid=req.body.uuid;
+        var uuid='common';
         contentHelper.getArticle(uuid,function (callback) {
             res.send(callback);
         });
