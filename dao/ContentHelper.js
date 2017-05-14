@@ -18,7 +18,7 @@ connection.connect(function (err) {
     console.log("passages connect id is "+connection.threadId);
 });
 var craeteTableForUser=function (uuid) {
-    connection.query('create table '+uuid+' (id int auto_increment primary key,title varchar(50),content longtext,url varchar(128)');
+    connection.query('create table '+uuid+' (id int auto_increment primary key,title varchar(50),content longtext,url varchar(128))');
 };
 var insertPassage=function (uuid,title,content) {
     /*fs.writeFile("C:/Sp/WorkPlace/Passages/"+uuid+"/"+title+'.txt',content,function (err) {
@@ -29,7 +29,8 @@ var insertPassage=function (uuid,title,content) {
     });*/
     //为每篇文章生成随机的url存进对应的title行;
     var url='u'+UUID.v1().replace(/-/g,'');
-    var str=[title,content,url];
+    var realurl=uuid+'/'+url;
+    var str=[title,content,realurl];
     connection.query('insert into '+uuid+' (title,content,url) values(?,?,?)',str);
     connection.query('insert into common (title,content,url) values(?,?,?)',str);
 };
@@ -53,6 +54,7 @@ var getActicleList=function (uuid,callback) {
 var getPassageByUUIDandTitle=function (uuid, title,callback) {
     connection.query('select * from '+uuid+' where url=\''+title+'\'',function (err, result, field) {
         if (err) throw err;
+        console.log(result);
         if (result.length>0){
             callback(result[0].content);
         }else {

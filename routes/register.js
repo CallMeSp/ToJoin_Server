@@ -27,9 +27,10 @@ router.post('/', function(req, res, next) {
       var address=req.body.address;
       var pwd=req.body.pwd;
       var num=req.body.num;
-      console.log('register:'+address+"  "+pwd+'   '+num);
+      var username=req.body.username;
+      console.log('register:'+address+"  "+pwd+'   '+num+'   '+username);
       //首先判断验证码是否相等
-      registHelper.checkNum(address,num,function (callback) {
+      registHelper.checkNum(address,num,username,function (callback) {
           if (callback){
 
               res.send('registersuccess');
@@ -39,17 +40,18 @@ router.post('/', function(req, res, next) {
               var uuid='u'+UUID.v1().replace(/-/g,'');
               console.log(uuid);
               //插入进数据库
-              registHelper.insertToUsersTable(address,pwd,uuid);
+              registHelper.insertToUsersTable(address,pwd,uuid,username);
 
               //在Content数据库中创建对应的table
               contentHelper.createTable(uuid);
 
-              fs.mkdir("C:/Sp/WorkPlace/Passages/"+uuid+"/",function (err) {
+              //创建该用户对应的个人文件夹用于存储相应的个人上传的图片文档等资料
+              /*fs.mkdir("C:/Sp/WorkPlace/Passages/"+uuid+"/",function (err) {
                   if (err){
                       return console.error(err);
                   }
                   console.log('目录创建成功');
-              })
+              })*/
           }else {
               console.log("注册失败");
               res.send('error');

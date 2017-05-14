@@ -48,20 +48,20 @@ var queryFromDbToInsert=function (address, num, callback) {
         }
     });
 };
-var insertToUsers=function (address, pwd,uuid) {
-    var content=[address,pwd,uuid];
+var insertToUsers=function (address, pwd,uuid,username) {
+    var content=[address,pwd,uuid,username];
     connection.query('select * from users where emailaddress=?',address,function (err, results, field) {
         if (results.length>0){
             //已经存在了
         }else {
-            connection.query('INSERT INTO users (emailaddress,passward,uuid) VALUES(?,?,?)',content);
+            connection.query('INSERT INTO users (emailaddress,passward,uuid,username) VALUES(?,?,?,?)',content);
         }
     });
 
 };
-var queryFromRegisterForNum=function (address,num,callback) {
-
-    connection.query('select * from users where emailaddress=?',address,function (err, results, field) {
+var queryFromRegisterForNum=function (address,num,username,callback) {
+    var content=[address,username];
+    connection.query('select * from users where emailaddress=? or username=?',content,function (err, results, field) {
         if (results.length>0){
             callback(false);
         }else {
@@ -105,11 +105,11 @@ var getUUIDByAddress=function (address, callback) {
 exports.insertToRegisterTable=function (address, num, callback) {
     queryFromDbToInsert(address,num,callback);
 };
-exports.checkNum=function (address, num, callback) {
-    queryFromRegisterForNum(address,num,callback);
+exports.checkNum=function (address, num, username,callback) {
+    queryFromRegisterForNum(address,num,username,callback);
 };
-exports.insertToUsersTable=function (address, pwd,uuid) {
-    insertToUsers(address,pwd,uuid);
+exports.insertToUsersTable=function (address, pwd,uuid,username) {
+    insertToUsers(address,pwd,uuid,username);
 };
 exports.checkLoginResult=function (address, pwd, callback) {
     checkLogin(address,pwd,callback);
