@@ -18,7 +18,7 @@ connection.connect(function (err) {
     console.log("passages connect id is "+connection.threadId);
 });
 var craeteTableForUser=function (uuid) {
-    connection.query('create table '+uuid+' (id int auto_increment primary key,title varchar(50),content longtext,url varchar(128))');
+    connection.query('create table '+uuid+' (id int auto_increment primary key,title varchar(50),content longtext,url varchar(128)，comments longtext)');
 };
 var insertPassage=function (uuid,title,content) {
     /*fs.writeFile("C:/Sp/WorkPlace/Passages/"+uuid+"/"+title+'.txt',content,function (err) {
@@ -43,7 +43,7 @@ var getActicleList=function (uuid,callback) {
                 jsonlist+=',';
             }
             //'\"content\":\"'+result[i].content+'\"'
-            jsonlist+='{\"title\":\"'+result[i].title+'\",\"contenturl\":\"'+result[i].url+'\"}';
+            jsonlist+='{\"title\":\"'+result[i].title+'\",\"contenturl\":\"'+result[i].url+'\",\"id\":'+result[i].id+'}';
         }
         jsonlist+=']}';
         console.log(jsonlist);
