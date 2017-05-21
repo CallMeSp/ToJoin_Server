@@ -39,6 +39,7 @@ router.post('/', function(req, res, next) {
 
               var uuid='u'+UUID.v1().replace(/-/g,'');
               console.log(uuid);
+
               //插入进数据库
               registHelper.insertToUsersTable(address,pwd,uuid,username);
 

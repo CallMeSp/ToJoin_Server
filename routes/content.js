@@ -23,10 +23,22 @@ router.post('/', function(req, res, next) {
         contentHelper.getArticle(uuid,function (callback) {
             res.send(callback);
         });
-    }else if (method=='makeComment'){
+    }else if (method=='makeReview'){
         //首先获取uuid，进入对应数据库，再获取对应文章的id，修改其comments字段.用json表示每位用户的评论
+        var uuid=req.body.fromwho;
+        var content=req.body.content;
+        var time=req.body.time;
+        var writter=req.body.writter;
+        var id=req.body.id;
+        contentHelper.makeReviewByUUID(uuid,content,time,writter,id);
 
-
+    }else if (method=='getReviewList'){
+        var writter=req.body.writter;
+        var id=req.body.id;
+        contentHelper.getReviewListByWritterAndId(writter,id,function (callback) {
+            console.log(callback);
+            res.send(callback);
+        })
     }
 });
 //   解析域名   /uuid/title   查看具体文章  查寻到数据库中的文章
